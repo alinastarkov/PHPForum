@@ -1,0 +1,36 @@
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body>
+  <form id="blogForm">
+    Title <input type="text" name="title" /><br />
+    Content <textarea name="content" rows="10" cols="30"></textarea><br />
+    <input type="submit" />
+  </form>
+  <p id="errorMsg"></p>
+  <script>
+    $(document).ready(function() {
+      $("form#blogForm").submit(function() {
+        var title = document.forms["blogForm"]["title"].value;
+        var content = document.forms["blogForm"]["content"].value;
+        if (title == "" || content == "") {
+          document.getElementById("errorMsg").innerHTML =
+            "You have to enter a value for title and content";
+          return false;
+        }
+        var userID = "<?php echo $_SESSION['id']; ?>";
+        var data = $("#blogForm").serializeArray();
+        data.push({ name: "userID", value: userID });
+        $.ajax({
+          type: "post",
+          url: "./blog_server.php",
+          data: data,
+          success: function(res) {
+            alert(res);
+          }
+        });
+        e.preventDefault();
+      });
+    });
+  </script>
+</body>
