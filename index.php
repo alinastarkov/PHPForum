@@ -21,9 +21,9 @@
           $creator = $row['username'];
           echo '<div class="card">';
           echo '<div class="card-body">';
-          echo '<h5 class="card-title">' .$title. '</h5>';
-          echo '<h6 class="card-subtitle mb-2 text-muted">by ' .$creator. '</h6>';
-          echo '<p class="card-text">' .$content. '</p>';
+          echo '<h5 class="card-title">' .htmlspecialchars($title). '</h5>';
+          echo '<h6 class="card-subtitle mb-2 text-muted">by ' .htmlspecialchars($creator). '</h6>';
+          echo '<p class="card-text">' .htmlspecialchars($content). '</p>';
           echo '</div>';
           echo '</div>';
 

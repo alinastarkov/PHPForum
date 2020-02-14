@@ -17,7 +17,8 @@
     }
 
     if(count($errors) === 0) {
-      $stmt = $conn->prepare("SELECT * FROM user WHERE username = '$username' LIMIT 1");
+      $stmt = $conn->prepare("SELECT * FROM user WHERE username = ? LIMIT 1");
+      $stmt->bind_param("s", $username);
       $stmt->execute();
       $resultarr = $stmt->get_result();
       if ($resultarr->num_rows > 0) {
@@ -27,7 +28,11 @@
         }
       } 
       if(count($errors) === 0){
-        $stmt2 = $conn->prepare("insert into user (username, password) values('$username', '$password')");
+        $stmt2 = $conn->prepare("insert into user (username, password) values(?, ?)");
+        $stmt2->bind_param("ss", 
+          $username,
+          $password
+        );
         $success = $stmt2->execute();
       }
     }

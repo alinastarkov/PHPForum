@@ -4,7 +4,13 @@
   <?php include 'mysql_connect.php';?>
   <?php
     $username = $_POST['username'];
-    $stmt = $conn->prepare("select * from user where username = '$username'");
+    $stmt = $conn->prepare("select * from user where username=?");
+
+    $stmt->bind_param("s", 
+      $username
+    );
+
+    $username = $_POST['username'];
     $stmt->execute();
   ?>
   <p>
