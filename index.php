@@ -32,7 +32,8 @@
     ?>
     <?php 
       if (isset($_SESSION['username'])) {
-        print('Create a post as '.$_SESSION['username']);
+        $username = $_SESSION['username'];
+        echo '<h5 class="card-title"> create a post as ' .htmlspecialchars($username). '</h5>';
         include 'blog.html';
       }
       else {

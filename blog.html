@@ -2,34 +2,49 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
-  <form id="blogForm">
-    Title <input type="text" name="title" /><br />
-    Content <textarea name="content" rows="10" cols="30"></textarea><br />
-    <input type="submit" />
-  </form>
+  Title <input type="text" name="title" /><br />
+  Content <textarea name="content" rows="10" cols="30"></textarea><br />
+  <input id="submitbtn" type="submit" />
   <p id="errorMsg"></p>
   <script>
     $(document).ready(function() {
-      $("form#blogForm").submit(function() {
-        var title = document.forms["blogForm"]["title"].value;
-        var content = document.forms["blogForm"]["content"].value;
+      $("#submitbtn").on("click", function() {
+        var title = $('input[name="title"]').val();
+        var content = $('textarea[name="content"]').val();
+        // clear form after submit
+        $('input[name="title"]').val("");
+        $('textarea[name="content"]').val("");
         if (title == "" || content == "") {
           document.getElementById("errorMsg").innerHTML =
             "You have to enter a value for title and content";
           return false;
         }
         var userID = "<?php echo $_SESSION['id']; ?>";
-        var data = $("#blogForm").serializeArray();
-        data.push({ name: "userID", value: userID });
+        var username = "<?php echo $_SESSION['username']; ?>";
+        var data = {
+          userID: userID,
+          title: title,
+          content: content
+        };
         $.ajax({
           type: "post",
           url: "./blog_server.php",
           data: data,
           success: function(res) {
-            //alert(res);
+            console.log(res);
+            $(".card")
+              .last()
+              .append(
+                '<div class="card"><div class="card-body"><h5 class="card-title">' +
+                  title +
+                  '</h5><h6 class="card-subtitle mb-2 text-muted"> by ' +
+                  username +
+                  '</h6><p class="card-text">' +
+                  content +
+                  "</p></div></div>"
+              );
           }
         });
-        e.preventDefault();
       });
     });
   </script>
